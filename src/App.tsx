@@ -1,4 +1,4 @@
-import { FC, memo, useState } from 'react';
+import { FC, memo, useMemo, useState } from 'react';
 import { Box, Link, Text, VStack } from '@chakra-ui/react';
 
 import { Accordion, AccordionItem } from './ui/Accordion';
@@ -11,6 +11,13 @@ import LayerControlsSection from './components/LayerControlsSection';
 
 const App: FC = () => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
+
+  const copyrightYear: string = useMemo(() => {
+    const currentYear = new Date().getFullYear();
+    const copyrightYear = currentYear >= 2025 ? `2025` : `2025-${currentYear}`;
+
+    return copyrightYear;
+  }, []);
 
   return (
     <MenuLayoutProvider>
@@ -87,7 +94,7 @@ const App: FC = () => {
         <Box p="2rem">
           Copyright &copy;{' '}
           <Link href="https://www.coreycapetillo.com">Corey M. Capetillo</Link>{' '}
-          {new Date().getFullYear()} All rights reserved.
+          {copyrightYear} All rights reserved.
         </Box>
       </VStack>
     </MenuLayoutProvider>
