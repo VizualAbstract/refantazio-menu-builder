@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
 import { Box } from '@chakra-ui/react';
 
-import TitledLayer from '../ui/TitledLayer';
+import TitleLayer from '../ui/TitledLayer';
 import { useMenuLayout } from '../contexts/MenuLayoutContext';
 
 const MenuPreview: FC = () => {
@@ -34,7 +34,7 @@ const MenuPreview: FC = () => {
           menuSettings.map((item, index) => {
             const { label, color, bg, visible, selected } = item;
             return (
-              <TitledLayer
+              <TitleLayer
                 key={index}
                 title={label}
                 bg={bg}
