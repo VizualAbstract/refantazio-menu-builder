@@ -142,6 +142,13 @@ const GlobalSettingsSection: FC<Props> = ({
     });
   }, [batchUpdateProperty]);
 
+  const handleFlipLayerText = useCallback(
+    (index: number, isTextFlipped: boolean) => {
+      updateProperty(index, 'isTextFlipped', !isTextFlipped);
+    },
+    [updateProperty],
+  );
+
   return (
     <VStack gap="20px">
       <VStack gap="10px" width="100%" alignItems="start">
@@ -255,6 +262,14 @@ const GlobalSettingsSection: FC<Props> = ({
                     />
                     <Separator />
                     <Button
+                      variant="outline"
+                      onClick={() =>
+                        handleFlipLayerText(index, item.isTextFlipped)
+                      }
+                    >
+                      Flip
+                    </Button>
+                    <Button
                       width="100px"
                       onClick={() => handleToggleSelected(index)}
                       colorScheme={item.selected ? 'blue' : 'gray'}
@@ -288,7 +303,7 @@ const GlobalSettingsSection: FC<Props> = ({
               <Button onClick={handleShowOnlySelected}>
                 Show Only Selected
               </Button>
-              <Button onClick={handleFlipText}>Flip</Button>
+              <Button onClick={handleFlipText}>Flip All</Button>
             </HStack>
           </VStack>
         </AccordionItem>
