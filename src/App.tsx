@@ -1,5 +1,5 @@
 import { FC, memo, useState } from 'react';
-import { Box, Text, VStack } from '@chakra-ui/react';
+import { Box, Link, Text, VStack } from '@chakra-ui/react';
 
 import { Accordion, AccordionItem } from './ui/Accordion';
 import Card from './ui/Card';
@@ -83,6 +83,11 @@ const App: FC = () => {
               <OutputSection />
             </AccordionItem>
           </Accordion>
+        </Box>
+        <Box p="2rem">
+          Copyright &copy;{' '}
+          <Link href="https://www.coreycapetillo.com">Corey M. Capetillo</Link>{' '}
+          {new Date().getFullYear()} All rights reserved.
         </Box>
       </VStack>
     </MenuLayoutProvider>
