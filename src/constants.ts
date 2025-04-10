@@ -474,10 +474,10 @@ const defaultGlobalSettings4: LayerConfig[] = [
 ];
 
 export const globalSettingsList = [
+  defaultGlobalSettings4,
   defaultGlobalSettings1,
   defaultGlobalSettings2,
   defaultGlobalSettings3,
-  defaultGlobalSettings4,
 ];
 
-export const defaultGlobalSettings = defaultGlobalSettings1;
+export const defaultGlobalSettings = globalSettingsList[0];
