@@ -1,7 +1,8 @@
-import { FC, memo } from 'react';
+import { FC, memo, useCallback } from 'react';
 import {
   ColorPicker as ChakraColorPicker,
   ColorPickerRootProps as ChakraColorPickerRootProps,
+  Color,
   parseColor,
 } from '@chakra-ui/react';
 
@@ -22,18 +23,27 @@ const ColorPicker: FC<Props> = ({
   defaultValue,
   ...colorPickerRootProps
 }) => {
+  const handleColorChange = useCallback(
+    (value: Color) => {
+      onChange?.(value.toString('rgba') || '');
+    },
+    [onChange],
+  );
+
   return (
     <ChakraColorPicker.Root
+      key={defaultValue}
       value={color ? parseColor(color) : undefined}
-      onValueChangeEnd={(e) => {
-        onChange?.(e.value.toString('rgba') || '');
-      }}
+      onValueChangeEnd={(e) => handleColorChange(e.value)}
       defaultValue={defaultValue ? parseColor(defaultValue) : undefined}
       {...colorPickerRootProps}
     >
       <ChakraColorPicker.HiddenInput />
       <ChakraColorPicker.Control>
-        <ChakraColorPicker.Input width={width} />
+        <ChakraColorPicker.Input
+          width={width}
+          onChange={(e) => handleColorChange(parseColor(e.target.value))}
+        />
         <ChakraColorPicker.Trigger />
       </ChakraColorPicker.Control>
       <ChakraColorPicker.Positioner>

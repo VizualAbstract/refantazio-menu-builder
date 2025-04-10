@@ -18,5 +18,6 @@ export type LayerConfig = {
   bg: string;
   visible: boolean;
   selected: boolean;
+  isTextFlipped: boolean;
   layerSettings: LayerSettings;
 };

@@ -49,20 +49,8 @@ const MenuPreview: FC = () => {
                   batchUpdateProperty('selected', (layer) => {
                     return layer.label === label ? !layer.selected : false;
                   });
-
-                  // const newGlobalSettings = [...menuSettings];
-
-                  // newGlobalSettings[index].selected =
-                  //   !newGlobalSettings[index].selected;
-
-                  // newGlobalSettings.forEach((item, i) => {
-                  //   if (i !== index) {
-                  //     item.selected = false;
-                  //   }
-                  // });
-
-                  // setGlobalSettings(newGlobalSettings);
                 }}
+                isTextFlipped={item.isTextFlipped}
               />
             );
           }),

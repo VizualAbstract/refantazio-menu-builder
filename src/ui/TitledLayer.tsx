@@ -4,9 +4,15 @@ import { Box, BoxProps } from '@chakra-ui/react';
 type Props = {
   title: string;
   isSelected?: boolean;
+  isTextFlipped?: boolean;
 } & Omit<BoxProps, 'children'>;
 
-const TitleLayer: FC<Props> = ({ title, isSelected, ...boxProps }) => {
+const TitleLayer: FC<Props> = ({
+  title,
+  isSelected,
+  isTextFlipped,
+  ...boxProps
+}) => {
   const selectedStyles = useMemo(() => {
     if (!isSelected) {
       return {};
@@ -34,7 +40,9 @@ const TitleLayer: FC<Props> = ({ title, isSelected, ...boxProps }) => {
       {...selectedStyles}
       {...boxProps}
     >
-      {title}
+      <Box transform={isTextFlipped ? 'scaleX(-1) scaleY(-1)' : undefined}>
+        {title}
+      </Box>
     </Box>
   );
 };

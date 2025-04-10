@@ -6,6 +6,7 @@ import {
   defaultGlobalSettings,
   defaultOptions,
   defaultPerspective,
+  globalSettingsList,
 } from '../constants';
 import { LayerConfig } from '../types';
 
@@ -13,15 +14,16 @@ import { createContext } from 'react';
 
 const MenuLayoutContext = createContext<MenuLayoutContextType | null>(null);
 
-type Props = {
-  children: ReactNode;
-};
-
 interface MenuLayoutContextType {
   perspective: number;
-  updatePerspective: (value: number) => void;
   menuSettings: LayerConfig[];
+  selectedLayer: LayerConfig | undefined;
+  updatePerspective: (value: number) => void;
   updateProperty: (index: number, path: string, value: unknown) => void;
+  updateProperties: (
+    index: number,
+    updates: Array<{ path: string; value: unknown }>,
+  ) => void;
   batchUpdateProperty: (
     path: string,
     getter: (layout: LayerConfig, index: number) => unknown,
@@ -29,8 +31,12 @@ interface MenuLayoutContextType {
   updateSelectedProperty: (path: string, value: unknown) => void;
   addNewLayer: () => void;
   deleteLayerByIndex: (index: number) => void;
-  selectedLayer: LayerConfig | undefined;
+  applySettings: (index: number) => void;
 }
+
+type Props = {
+  children: ReactNode;
+};
 
 export const MenuLayoutProvider = ({ children }: Props) => {
   const [perspective, setPerspective] = useState<number>(defaultPerspective);
@@ -53,14 +59,26 @@ export const MenuLayoutProvider = ({ children }: Props) => {
     [menuSettings],
   );
 
+  const updateProperties = useCallback(
+    (index: number, updates: Array<{ path: string; value: unknown }>) => {
+      const newSettings = cloneDeep(menuSettings);
+
+      updates.forEach((update) => {
+        set(newSettings[index], update.path, update.value);
+      });
+
+      setMenuSettings(newSettings);
+    },
+    [menuSettings],
+  );
+
   const batchUpdateProperty = useCallback(
     (path: string, getter: (layout: LayerConfig, index: number) => unknown) => {
       const newSettings = cloneDeep(menuSettings);
 
-      menuSettings.forEach((layer, index) => {
+      newSettings.forEach((layer, index) => {
         const value = getter(layer, index);
-
-        set(newSettings, path, value);
+        set(layer, path, value);
       });
 
       setMenuSettings(newSettings);
@@ -85,6 +103,7 @@ export const MenuLayoutProvider = ({ children }: Props) => {
       bg: 'white',
       visible: true,
       selected: false,
+      isTextFlipped: false,
       layerSettings: cloneDeep(defaultOptions),
     };
 
@@ -99,6 +118,12 @@ export const MenuLayoutProvider = ({ children }: Props) => {
     });
   }, []);
 
+  const applySettings = useCallback((index: number) => {
+    const settings = cloneDeep(globalSettingsList[index]);
+
+    setMenuSettings(settings);
+  }, []);
+
   const selectedLayer = useMemo(
     () => menuSettings.find((layer) => layer.selected),
     [menuSettings],
@@ -109,11 +134,13 @@ export const MenuLayoutProvider = ({ children }: Props) => {
     updatePerspective,
     menuSettings,
     updateProperty,
+    updateProperties,
     batchUpdateProperty,
     updateSelectedProperty,
     addNewLayer,
     deleteLayerByIndex,
     selectedLayer,
+    applySettings,
   };
 
   return (
