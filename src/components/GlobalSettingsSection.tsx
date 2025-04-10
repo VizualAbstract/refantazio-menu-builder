@@ -246,7 +246,6 @@ const GlobalSettingsSection: FC<Props> = ({
                       width="100px"
                       defaultValue={color}
                       onChange={(color) => handleUpdateColor(index, color)}
-                      key={selectedIndex}
                     />
                     <Box>BG</Box>
                     <ColorPicker
