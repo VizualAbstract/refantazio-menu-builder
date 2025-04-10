@@ -17,7 +17,12 @@ const MenuPreview: FC = () => {
       overflow="visible"
       margin="50px auto"
     >
-      <Box perspective={perspective} width="100%" height="100%">
+      <Box
+        perspective={perspective}
+        width="100%"
+        height="100%"
+        position="relative"
+      >
         <Box
           position="absolute"
           width="10px"
@@ -30,31 +35,32 @@ const MenuPreview: FC = () => {
           zIndex={90}
           pointerEvents="none"
         />
-        {[
-          menuSettings.map((item, index) => {
-            const { label, color, bg, visible, selected } = item;
-            return (
-              <TitleLayer
-                key={index}
-                title={label}
-                bg={bg}
-                color={color}
-                isSelected={selected}
-                opacity={visible ? 1 : 0}
-                top={`${item.layerSettings.top}%`}
-                left={`${item.layerSettings.left}%`}
-                transform={`rotateZ(${item.layerSettings.rotateZ}deg) translateX(${item.layerSettings.translateX}%) rotateX(${item.layerSettings.rotateX}deg) translateY(${item.layerSettings.translateY}%) rotateY(${item.layerSettings.rotateY}deg) translateZ(${item.layerSettings.translateZ}px)`}
-                transformOrigin={`${item.layerSettings.transformOriginX}px ${item.layerSettings.transformOriginY}px ${item.layerSettings.transformOriginZ}px`}
-                onClick={() => {
-                  batchUpdateProperty('selected', (layer) => {
-                    return layer.label === label ? !layer.selected : false;
-                  });
-                }}
-                isTextFlipped={item.isTextFlipped}
-              />
-            );
-          }),
-        ]}
+        {menuSettings.map((item, index) => {
+          const { label, color, bg, visible, selected, layerSettings } = item;
+
+          const transformOriginValue = `${layerSettings.transformOriginX}px ${layerSettings.transformOriginY}px ${layerSettings.transformOriginZ || 0}px`;
+
+          return (
+            <TitleLayer
+              key={index}
+              title={label}
+              bg={bg}
+              color={color}
+              isSelected={selected}
+              opacity={visible ? 1 : 0}
+              top={`${layerSettings.top}%`}
+              left={`${layerSettings.left}%`}
+              transform={`rotateZ(${layerSettings.rotateZ}deg) translateX(${layerSettings.translateX}%) rotateX(${layerSettings.rotateX}deg) translateY(${layerSettings.translateY}%) rotateY(${layerSettings.rotateY}deg) translateZ(${layerSettings.translateZ}px)`}
+              transformOrigin={transformOriginValue}
+              onClick={() => {
+                batchUpdateProperty('selected', (layer) => {
+                  return layer.label === label ? !layer.selected : false;
+                });
+              }}
+              isTextFlipped={item.isTextFlipped}
+            />
+          );
+        })}
       </Box>
     </Box>
   );

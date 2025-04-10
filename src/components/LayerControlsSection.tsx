@@ -480,6 +480,30 @@ const Section: FC<Props> = ({ selectedIndex, onChangeSelectedIndex }) => {
                 </InputGroup>
               </HStack>
             </VStack>
+            <Blockquote bg="blue.50" colorPalette="blue">
+              <Text fontSize="12px" fontWeight="bold">
+                Transform origin explained:
+              </Text>
+              <List>
+                <ListItem>
+                  The{' '}
+                  <Box as="span" fontWeight="bold" color="red">
+                    red dot
+                  </Box>{' '}
+                  shows the exact transform origin point for each layer.
+                </ListItem>
+                <ListItem>
+                  The{' '}
+                  <Box as="span" fontWeight="bold" color="blue">
+                    blue dot
+                  </Box>{' '}
+                  shows the center of the container (50%, 50%).
+                </ListItem>
+                <ListItem>
+                  Position values (top/left) are relative to the container.
+                </ListItem>
+              </List>
+            </Blockquote>
             <Button
               onClick={() =>
                 updateProperties(selectedIndex, [
